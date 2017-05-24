@@ -149,7 +149,7 @@ var app = {
 
 
 firebase.initializeApp(app.firebaseConfig);
-firebase.database().ref().on('value', function(snap){
+firebase.database().ref('order').on('value', function(snap){
     if (snap.val() !== null) {
         app.setSnap(snap.val());
         app.refreshCalendar();
