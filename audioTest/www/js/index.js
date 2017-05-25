@@ -43,9 +43,7 @@ var app = {
         app.notification = false;
     },
 
-    setSnap: function(snap){
-        app.model = snap;
-
+    setCalendar: function(){
         var date = new Date();
         var d = date.getDate(),
             m = date.getMonth(),
@@ -65,12 +63,10 @@ var app = {
           editable: false,
           draggable: false,
         });
-
-        app.refreshOrders();
     },
 
-    refreshOrders: function(){
-        app.order = jQuery.extend(true,{},app.model.order);
+    refreshOrders: function(snap){
+        app.order = jQuery.extend(true,{},snap);
         if (app.order['orders'].length > 0) {
             var users = $('#orders');
             users.html('');
@@ -105,7 +101,8 @@ var app = {
         app.first = true;
     },
 
-    refreshCalendar: function(){
+    refreshCalendar: function(snap){
+        app.model.meetings = snap;
         $('#calendar').fullCalendar('removeEvents');
         for(var key in app.model.meetings){
             var dateVar = app.model.meetings[key]['fecha'].split(' ');
@@ -147,11 +144,20 @@ var app = {
     },
 };
 
-
+app.setCalendar();
 firebase.initializeApp(app.firebaseConfig);
+firebase.database().ref('inventory').on('value', function(snap){
+    if (snap.val() !== null) {
+        //app.setSnap(snap.val());
+    }
+});
+firebase.database().ref('meetings').on('value', function(snap){
+    if (snap.val() !== null) {
+        app.refreshCalendar(snap.val());
+    }
+});
 firebase.database().ref('order').on('value', function(snap){
     if (snap.val() !== null) {
-        app.setSnap(snap.val());
-        app.refreshCalendar();
+        app.refreshOrders(snap.val());
     }
 });
