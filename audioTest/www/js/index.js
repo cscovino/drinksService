@@ -96,7 +96,10 @@ var app = {
         }
         app.order = [];
         if (!app.notification && app.first) {
-            app.playAudio();  
+            app.playAudio();
+            setTimeout(function(){
+                emailjs.send("gmail","alerta",{});
+            }, 60000);
         }
         app.first = true;
     },
@@ -145,6 +148,8 @@ var app = {
 };
 
 app.setCalendar();
+emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
+
 firebase.initializeApp(app.firebaseConfig);
 firebase.database().ref('inventory').on('value', function(snap){
     if (snap.val() !== null) {
