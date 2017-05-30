@@ -145,6 +145,22 @@ var app = {
             eventsE = '';
         }
     },
+
+    showplus: function(){
+        document.getElementById('okButton').style.display = 'inline-block';
+        var buttons = document.getElementsByClassName('glyphicon');
+        for(var i=0; i<buttons.length; i++){
+            buttons[i].style.display = 'inline-block';
+        }
+    },
+
+    hideplus: function(){
+        document.getElementById('okButton').style.display = 'none';
+        var buttons = document.getElementsByClassName('glyphicon');
+        for(var i=0; i<buttons.length; i++){
+            buttons[i].style.display = 'none';
+        }
+    }
 };
 
 app.setCalendar();
