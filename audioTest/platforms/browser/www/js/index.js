@@ -1,4 +1,5 @@
 var app = {
+
     my_media: '',
 
     model: {},
@@ -7,17 +8,13 @@ var app = {
 
     notification: false,
 
-    modelMeet: {
-        'titulo': '',
-        'fecha': '',
-        'users':[]
-    },
-
     order: [],
 
-    meets: [],
-
     odd: 0,
+
+    inventory: {},
+
+    time: {},
 
     firebaseConfig: {
     apiKey: "AIzaSyC50skbZWPdmbhMgSz9ulM8pBJ8r8F8lag",
@@ -33,14 +30,23 @@ var app = {
         var p = window.location.pathname;
         var aux = p.substring(0,p.lastIndexOf('/'));
         var url = aux+'/sounds/office_phone.mp3';
-        app.my_media = new Media(url,null,function(err){alert(JSON.stringify(err));});
+        app.my_media = new Media(url,null,function(err){alert(JSON.stringify(err));},app.onStatus);
         app.my_media.play();
         app.notification = true;
+    },
+
+    onStatus: function(status){
+        if (status == Media.MEDIA_STOPPED) {
+            if (app.notification) {
+                app.my_media.play();
+            }
+        }
     },
 
     receivedOrder: function(){
         app.my_media.stop();
         app.notification = false;
+        clearTimeout(app.time);
     },
 
     setCalendar: function(){
@@ -97,9 +103,10 @@ var app = {
         app.order = [];
         if (!app.notification && app.first) {
             app.playAudio();
-            setTimeout(function(){
+            app.time = setTimeout(function(){
                 emailjs.send("gmail","alerta",{});
-            }, 60000);
+                app.receivedOrder();
+            }, 120000);
         }
         app.first = true;
     },
@@ -160,6 +167,35 @@ var app = {
         for(var i=0; i<buttons.length; i++){
             buttons[i].style.display = 'none';
         }
+        firebase.database().ref('inventory').set(app.inventory);
+    },
+
+    refreshInventory: function(){
+        console.log(app.inventory);
+        for(var key in app.inventory){
+            var bar = 'bar-'+key;
+            document.getElementById(key).innerHTML = app.inventory[key]+'/10';
+            var percent = app.inventory[key]*100/10;
+            document.getElementById(bar).style.width = percent+'%';
+            if (percent < 33) {
+                document.getElementById(bar).className = 'progress-bar progress-bar-danger';
+            }
+            else if (percent < 66) {
+                document.getElementById(bar).className = 'progress-bar progress-bar-warning';
+            }
+            else {
+                document.getElementById(bar).className = 'progress-bar progress-bar-success';
+            }
+        }
+    },
+
+    add: function(item){
+        console.log(item.id);
+        app.inventory[item.id] += 1;
+        if (app.inventory[item.id] > 10) {
+            app.inventory[item.id] = 10;
+        }
+        app.refreshInventory();
     }
 };
 
@@ -169,7 +205,8 @@ emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
 firebase.initializeApp(app.firebaseConfig);
 firebase.database().ref('inventory').on('value', function(snap){
     if (snap.val() !== null) {
-        //app.setSnap(snap.val());
+        app.inventory = snap.val();
+        app.refreshInventory();
     }
 });
 firebase.database().ref('meetings').on('value', function(snap){
