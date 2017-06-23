@@ -73,16 +73,17 @@ var app = {
 
     refreshOrders: function(snap){
         app.order = jQuery.extend(true,{},snap);
+        //Falta colocar sala
         if (app.order['orders'].length > 0) {
             var users = $('#orders');
             users.html('');
             var codigo = '<table class="table table-bordered"';
             codigo += '<tbody>';
                 codigo += '<tr>';
-                    codigo += '<th>Empresa</th>';
+                    codigo += '<th>Sala<th>';
                     codigo += '<th>Nombre</th>';
                     codigo += '<th>Bebida</th>';
-                        codigo += '<th>Comentario</th>';
+                    codigo += '<th>Comentario</th>';
                 codigo += '</tr>';
             for (var i=0; i<app.order['orders'].length; i++) {
                 for(var key in app.order['orders'][i]){
@@ -212,6 +213,7 @@ firebase.database().ref('inventory').on('value', function(snap){
 firebase.database().ref('meetings').on('value', function(snap){
     if (snap.val() !== null) {
         app.refreshCalendar(snap.val());
+        app.model = snap.val();
     }
 });
 firebase.database().ref('order').on('value', function(snap){
