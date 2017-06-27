@@ -73,26 +73,26 @@ var app = {
 
     refreshOrders: function(snap){
         app.order = jQuery.extend(true,{},snap);
-        //Falta colocar sala
         if (app.order['orders'].length > 0) {
             var users = $('#orders');
             users.html('');
             var codigo = '<table class="table table-bordered"';
             codigo += '<tbody>';
                 codigo += '<tr>';
-                    codigo += '<th>Sala<th>';
                     codigo += '<th>Nombre</th>';
                     codigo += '<th>Bebida</th>';
                     codigo += '<th>Comentario</th>';
+                    codigo += '<th>Sala</th>';
                 codigo += '</tr>';
             for (var i=0; i<app.order['orders'].length; i++) {
                 for(var key in app.order['orders'][i]){
                     for(var key2 in app.order['orders'][i][key]){
-                        codigo += '<tr>';
-                            codigo += '<td>'+key+'</td>'
+                        codigo += '<tr id="'+key2.replace(' ','')+app.order['orders'][i][key][key2]['Bebida'].replace(' ','')+'" onclick="app.confirmDelivered(this);">';
+                            var id = app.order['orders'][i][key][key2]['meetId'];
                             codigo += '<td>'+key2+'</td>';
                             codigo += '<td>'+app.order['orders'][i][key][key2]['Bebida']+'</td>';
                             codigo += '<td>'+app.order['orders'][i][key][key2]['Coment']+'</td>';
+                            codigo += '<td>'+app.model[id]['sala']+'</td>'
                         codigo += '</tr>';
                     }
                 }
@@ -110,6 +110,18 @@ var app = {
             }, 120000);
         }
         app.first = true;
+    },
+
+    confirmDelivered: function(data){
+        document.getElementById('aux-div').innerHTML = data.id;
+        $('#myModal2').modal('show');
+    },
+
+    deliveredOrder: function(){
+        //firebase.database().ref('order').child()
+        var id = document.getElementById('aux-div').innerHTML;
+        document.getElementById(id).style.textDecoration = 'line-through';
+        document.getElementById(id).style.backgroundColor = '#a3a3a3';
     },
 
     refreshCalendar: function(snap){
@@ -172,7 +184,6 @@ var app = {
     },
 
     refreshInventory: function(){
-        console.log(app.inventory);
         for(var key in app.inventory){
             var bar = 'bar-'+key;
             document.getElementById(key).innerHTML = app.inventory[key]+'/10';
@@ -191,7 +202,6 @@ var app = {
     },
 
     add: function(item){
-        console.log(item.id);
         app.inventory[item.id] += 1;
         if (app.inventory[item.id] > 10) {
             app.inventory[item.id] = 10;
@@ -212,8 +222,8 @@ firebase.database().ref('inventory').on('value', function(snap){
 });
 firebase.database().ref('meetings').on('value', function(snap){
     if (snap.val() !== null) {
-        app.refreshCalendar(snap.val());
         app.model = snap.val();
+        app.refreshCalendar(snap.val());
     }
 });
 firebase.database().ref('order').on('value', function(snap){
