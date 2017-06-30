@@ -91,7 +91,7 @@ var app = {
             for (var i=0; i<app.order['orders'].length; i++) {
                 for(var key in app.order['orders'][i]){
                     if (app.order['orders'][i][key]['entregado'] === 1) {
-                        codigo += '<tr id="'+key.replace(' ','-')+'_'+app.order['orders'][i][key]['Bebida'].replace(' ','-')+'" onclick="app.confirmDelivered(this);" style="text-decoration:line-through;background-color:#a3a3a3;">';
+                        codigo += '<tr id="'+key.replace(' ','-')+'_'+app.order['orders'][i][key]['Bebida'].replace(' ','-')+'" onclick="app.confirmDelivered(this);" style="text-decoration:line-through;color:#ccc;">';
                     }
                     else{
                         codigo += '<tr id="'+key.replace(' ','-')+'_'+app.order['orders'][i][key]['Bebida'].replace(' ','-')+'" onclick="app.confirmDelivered(this);">';
