@@ -216,7 +216,6 @@ var app = {
     },
 
     refreshInventory: function(){
-        debugger;
         for(var key in app.inventory){
             var bar = 'bar-'+key;
             document.getElementById(key).innerHTML = app.inventory[key]+'/10';
