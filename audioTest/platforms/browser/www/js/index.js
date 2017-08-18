@@ -110,7 +110,6 @@ var app = {
             codigo += '</table>';
             users.append(codigo);
         }
-        debugger;
         if(!app.first){
             app.numOrder = app.order['orders'].length;
         }
@@ -144,7 +143,6 @@ var app = {
         var id = document.getElementById('aux-div').innerHTML;
         var client = id.split('_')[0].replace('-',' ');
         var drink = id.split('_')[1].replace('-',' ');
-        debugger;
         for (var i=0; i<app.orders['orders'].length; i++) {
             for(var key in app.orders['orders'][i]){
                 if (key === client) {

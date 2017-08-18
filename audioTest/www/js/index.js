@@ -117,7 +117,7 @@ var app = {
             app.numOrder = app.order['orders'].length;
             app.fecha = app.order['fecha'];
         }
-        if (app.order['orders'].length > app.numOrder) {
+        if (app.order['orders'].length >= app.numOrder) {
             app.numOrder = app.order['orders'].length;
             if (!app.notification && app.first) {
                 app.playAudio();
