@@ -10,7 +10,11 @@ var app = {
 
     order: [],
 
+    orders: [],
+
     odd: 0,
+
+    numOrder: 0,
 
     inventory: {},
 
@@ -73,42 +77,87 @@ var app = {
 
     refreshOrders: function(snap){
         app.order = jQuery.extend(true,{},snap);
+        console.log(app.numOrder);
+        console.log(app.order['orders'].length);
         if (app.order['orders'].length > 0) {
             var users = $('#orders');
             users.html('');
             var codigo = '<table class="table table-bordered"';
             codigo += '<tbody>';
                 codigo += '<tr>';
-                    codigo += '<th>Empresa</th>';
                     codigo += '<th>Nombre</th>';
                     codigo += '<th>Bebida</th>';
-                        codigo += '<th>Comentario</th>';
+                    codigo += '<th>Comentario</th>';
+                    codigo += '<th>Sala</th>';
                 codigo += '</tr>';
             for (var i=0; i<app.order['orders'].length; i++) {
                 for(var key in app.order['orders'][i]){
-                    for(var key2 in app.order['orders'][i][key]){
-                        codigo += '<tr>';
-                            codigo += '<td>'+key+'</td>'
-                            codigo += '<td>'+key2+'</td>';
-                            codigo += '<td>'+app.order['orders'][i][key][key2]['Bebida']+'</td>';
-                            codigo += '<td>'+app.order['orders'][i][key][key2]['Coment']+'</td>';
-                        codigo += '</tr>';
+                    if (app.order['orders'][i][key]['entregado'] === 1) {
+                        codigo += '<tr id="'+key.replace(' ','-')+'_'+app.order['orders'][i][key]['Bebida'].replace(' ','-')+'" onclick="app.confirmDelivered(this);" style="text-decoration:line-through;color:#ccc;">';
                     }
+                    else{
+                        codigo += '<tr id="'+key.replace(' ','-')+'_'+app.order['orders'][i][key]['Bebida'].replace(' ','-')+'" onclick="app.confirmDelivered(this);">';
+                    }
+                        var id = app.order['orders'][i][key]['meetId'];
+                        codigo += '<td>'+key+'</td>';
+                        codigo += '<td>'+app.order['orders'][i][key]['Bebida']+'</td>';
+                        codigo += '<td>'+app.order['orders'][i][key]['Coment']+'</td>';
+                        codigo += '<td>'+app.model[id]['sala']+'</td>'
+                    codigo += '</tr>';
                 }
             }
                 codigo += '</tbody>';
             codigo += '</table>';
             users.append(codigo);
         }
-        app.order = [];
-        if (!app.notification && app.first) {
-            app.playAudio();
-            app.time = setTimeout(function(){
-                emailjs.send("gmail","alerta",{});
-                app.receivedOrder();
-            }, 120000);
+        if(!app.first){
+            app.numOrder = app.order['orders'].length;
+        }
+        if (app.order['orders'].length > app.numOrder) {
+            app.numOrder = app.order['orders'].length;
+            if (!app.notification && app.first) {
+                app.playAudio();
+                app.time = setTimeout(function(){
+                    emailjs.send("gmail","alerta",{});
+                    app.receivedOrder();
+                }, 120000);
+            }
+        }
+        else{
+            app.numOrder = app.order['orders'].length;
         }
         app.first = true;
+        console.log(app.numOrder);
+        console.log(app.order['orders'].length);
+        app.order = [];
+    },
+
+    confirmDelivered: function(data){
+        document.getElementById('aux-div').innerHTML = data.id;
+        $('#myModal2').modal('show');
+    },
+
+    deliveredOrder: function(){
+        var id = document.getElementById('aux-div').innerHTML;
+        var client = id.split('_')[0].replace('-',' ');
+        var drink = id.split('_')[1].replace('-',' ');
+        debugger;
+        for (var i=0; i<app.orders['orders'].length; i++) {
+            for(var key in app.orders['orders'][i]){
+                if (key === client) {
+                    if (app.orders['orders'][i][key]['Bebida'] === drink) {
+                        app.orders['orders'][i][key]['entregado'] = 1;
+                        var fechaAct = new Date();
+                        var hact = fechaAct.getHours();
+                        var mact = fechaAct.getMinutes();
+                        app.orders['orders'][i][key]['horae'] = hact+':'+mact;
+                    }
+                }
+            }
+        }
+        firebase.database().ref('order').update(app.orders);
+        document.getElementById(id).style.textDecoration = 'line-through';
+        document.getElementById(id).style.backgroundColor = '#a3a3a3';
     },
 
     refreshCalendar: function(snap){
@@ -171,7 +220,6 @@ var app = {
     },
 
     refreshInventory: function(){
-        console.log(app.inventory);
         for(var key in app.inventory){
             var bar = 'bar-'+key;
             document.getElementById(key).innerHTML = app.inventory[key]+'/10';
@@ -190,7 +238,6 @@ var app = {
     },
 
     add: function(item){
-        console.log(item.id);
         app.inventory[item.id] += 1;
         if (app.inventory[item.id] > 10) {
             app.inventory[item.id] = 10;
@@ -211,11 +258,13 @@ firebase.database().ref('inventory').on('value', function(snap){
 });
 firebase.database().ref('meetings').on('value', function(snap){
     if (snap.val() !== null) {
+        app.model = snap.val();
         app.refreshCalendar(snap.val());
     }
 });
 firebase.database().ref('order').on('value', function(snap){
     if (snap.val() !== null) {
+        app.orders = jQuery.extend(true,{},snap.val());
         app.refreshOrders(snap.val());
     }
 });
