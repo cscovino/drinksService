@@ -110,7 +110,6 @@ var app = {
             codigo += '</table>';
             users.append(codigo);
         }
-        debugger;
         if(!app.first){
             app.numOrder = app.order['orders'].length;
         }
