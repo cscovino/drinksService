@@ -12,6 +12,8 @@ var app = {
 
     orders: [],
 
+    fecha:'',
+
     odd: 0,
 
     numOrder: 0,
@@ -108,8 +110,13 @@ var app = {
             codigo += '</table>';
             users.append(codigo);
         }
+        debugger;
         if(!app.first){
             app.numOrder = app.order['orders'].length;
+        }
+        if (app.fecha != app.order['fecha']) {
+            app.numOrder = app.order['orders'].length;
+            app.fecha = app.order['fecha'];
         }
         if (app.order['orders'].length >= app.numOrder) {
             app.numOrder = app.order['orders'].length;
