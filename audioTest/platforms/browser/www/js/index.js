@@ -12,6 +12,8 @@ var app = {
 
     orders: [],
 
+    fecha:'',
+
     odd: 0,
 
     numOrder: 0,
@@ -77,8 +79,6 @@ var app = {
 
     refreshOrders: function(snap){
         app.order = jQuery.extend(true,{},snap);
-        console.log(app.numOrder);
-        console.log(app.order['orders'].length);
         if (app.order['orders'].length > 0) {
             var users = $('#orders');
             users.html('');
@@ -110,10 +110,15 @@ var app = {
             codigo += '</table>';
             users.append(codigo);
         }
+        debugger;
         if(!app.first){
             app.numOrder = app.order['orders'].length;
         }
-        if (app.order['orders'].length > app.numOrder) {
+        if (app.fecha != app.order['fecha']) {
+            app.numOrder = app.order['orders'].length;
+            app.fecha = app.order['fecha'];
+        }
+        if (app.order['orders'].length >= app.numOrder) {
             app.numOrder = app.order['orders'].length;
             if (!app.notification && app.first) {
                 app.playAudio();
@@ -127,8 +132,6 @@ var app = {
             app.numOrder = app.order['orders'].length;
         }
         app.first = true;
-        console.log(app.numOrder);
-        console.log(app.order['orders'].length);
         app.order = [];
     },
 
