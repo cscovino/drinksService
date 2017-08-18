@@ -117,7 +117,7 @@ var app = {
             app.numOrder = app.order['orders'].length;
             app.fecha = app.order['fecha'];
         }
-        if (app.order['orders'].length >= app.numOrder) {
+        if (app.order['orders'].length > app.numOrder) {
             app.numOrder = app.order['orders'].length;
             if (!app.notification && app.first) {
                 app.playAudio();
@@ -143,7 +143,6 @@ var app = {
         var id = document.getElementById('aux-div').innerHTML;
         var client = id.split('_')[0].replace('-',' ');
         var drink = id.split('_')[1].replace('-',' ');
-        debugger;
         for (var i=0; i<app.orders['orders'].length; i++) {
             for(var key in app.orders['orders'][i]){
                 if (key === client) {
