@@ -180,9 +180,6 @@ var app = {
             var yearVar = dateVar[0].split("/")[2];
             var monthVar = dateVar[0].split("/")[0];
             var dayVar = dateVar[0].split("/")[1];
-            var yearVarE = dateVar[4].split("/")[2];
-            var monthVarE = dateVar[4].split("/")[0];
-            var dayVarE = dateVar[4].split("/")[1];
             var hVar = dateVar[1].split(':')[0];
             if (dateVar[2] === 'PM') {
                 hVar = +hVar + 12;
@@ -191,27 +188,30 @@ var app = {
                 }
             }
             var mVar = dateVar[1].split(':')[1];
-            var hVarE = dateVar[5].split(':')[0];
-            if (dateVar[6] === 'PM') {
+            var hVarE = dateVar[4].split(':')[0];
+            if (dateVar[5] === 'PM') {
                 hVarE = +hVarE + 12;
                 if (hVarE === 24) {
                     hVarE = 00;
                 }
             }
-            var mVarE = dateVar[5].split(':')[1];
-            var ttE = app.model.meetings[key]['titulo'];
+            var mVarE = dateVar[4].split(':')[1];
+            var ttE = app.model.meetings[key]['sala']+' - '+app.model.meetings[key]['titulo'];
             var eventsE = {
                 title: ttE,
                 start: new Date(yearVar,monthVar-1,dayVar,hVar,mVar),
-                end: new Date(yearVarE,monthVarE-1,dayVarE,hVarE,mVarE),
+                end: new Date(yearVar,monthVar-1,dayVar,hVarE,mVarE),
                 allDay: false,
                 backgroundColor: "#0073b7",
-                borderColor :"#0073b7"
+                borderColor :"#0073b7",
             };
 
-            $('#calendar').fullCalendar('renderEvent', eventsE);
+            $('#calendar').fullCalendar('renderEvent', eventsE, 'stick');
             eventsE = '';
         }
+        $('#calendar').fullCalendar({
+
+        });
     },
 
     showplus: function(){
