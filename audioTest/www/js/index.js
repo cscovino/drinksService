@@ -113,11 +113,22 @@ var app = {
         if(!app.first){
             app.numOrder = app.order['orders'].length;
         }
-        if (app.fecha != app.order['fecha']) {
+        if (app.fecha != app.order['fecha'] && app.order['orders'].length === app.numOrder) {
+            app.numOrder = app.order['orders'].length;
+            if (!app.notification && app.first) {
+                app.playAudio();
+                app.time = setTimeout(function(){
+                    emailjs.send("gmail","alerta",{});
+                    app.receivedOrder();
+                }, 120000);
+            }
+            app.fecha = app.order['fecha'];
+        }
+        else if (app.fecha != app.order['fecha']) {
             app.numOrder = app.order['orders'].length;
             app.fecha = app.order['fecha'];
         }
-        if (app.order['orders'].length >= app.numOrder) {
+        if (app.order['orders'].length > app.numOrder) {
             app.numOrder = app.order['orders'].length;
             if (!app.notification && app.first) {
                 app.playAudio();
