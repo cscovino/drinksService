@@ -74,6 +74,21 @@ var app = {
           },
           editable: false,
           draggable: false,
+          allDaySlot: false,
+          minTime: '8:00:00',
+          //maxTime: '18:00:00',
+          views: {
+                settimana: {
+                    type: 'agendaWeek',
+                    duration: {
+                        days: 7
+                    },
+                    title: 'Apertura',
+                    columnFormat: 'dddd', // Format the day to only show like 'Monday'
+                    hiddenDays: [0, 6] // Hide Sunday and Saturday?
+                }
+            },
+          defaultView: 'settimana',
         });
     },
 
@@ -93,7 +108,7 @@ var app = {
             for (var i=0; i<app.order['orders'].length; i++) {
                 for(var key in app.order['orders'][i]){
                     if (app.order['orders'][i][key]['entregado'] === 1) {
-                        codigo += '<tr id="'+key.replace(' ','-')+'_'+app.order['orders'][i][key]['Bebida'].replace(' ','-')+'" onclick="app.confirmDelivered(this);" style="text-decoration:line-through;color:#ccc;">';
+                        codigo += '<tr style="text-decoration:line-through;color:#ccc;">';
                     }
                     else{
                         codigo += '<tr id="'+key.replace(' ','-')+'_'+app.order['orders'][i][key]['Bebida'].replace(' ','-')+'" onclick="app.confirmDelivered(this);">';

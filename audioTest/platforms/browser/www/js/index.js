@@ -74,6 +74,21 @@ var app = {
           },
           editable: false,
           draggable: false,
+          allDaySlot: false,
+          minTime: '8:00:00',
+          //maxTime: '18:00:00',
+          views: {
+                settimana: {
+                    type: 'agendaWeek',
+                    duration: {
+                        days: 7
+                    },
+                    title: 'Apertura',
+                    columnFormat: 'dddd', // Format the day to only show like 'Monday'
+                    hiddenDays: [0, 6] // Hide Sunday and Saturday?
+                }
+            },
+          defaultView: 'settimana',
         });
     },
 
@@ -93,7 +108,7 @@ var app = {
             for (var i=0; i<app.order['orders'].length; i++) {
                 for(var key in app.order['orders'][i]){
                     if (app.order['orders'][i][key]['entregado'] === 1) {
-                        codigo += '<tr id="'+key.replace(' ','-')+'_'+app.order['orders'][i][key]['Bebida'].replace(' ','-')+'" onclick="app.confirmDelivered(this);" style="text-decoration:line-through;color:#ccc;">';
+                        codigo += '<tr style="text-decoration:line-through;color:#ccc;">';
                     }
                     else{
                         codigo += '<tr id="'+key.replace(' ','-')+'_'+app.order['orders'][i][key]['Bebida'].replace(' ','-')+'" onclick="app.confirmDelivered(this);">';
@@ -113,11 +128,22 @@ var app = {
         if(!app.first){
             app.numOrder = app.order['orders'].length;
         }
-        if (app.fecha != app.order['fecha']) {
+        if (app.fecha != app.order['fecha'] && app.order['orders'].length === app.numOrder) {
+            app.numOrder = app.order['orders'].length;
+            if (!app.notification && app.first) {
+                app.playAudio();
+                app.time = setTimeout(function(){
+                    emailjs.send("gmail","alerta",{});
+                    app.receivedOrder();
+                }, 120000);
+            }
+            app.fecha = app.order['fecha'];
+        }
+        else if (app.fecha != app.order['fecha']) {
             app.numOrder = app.order['orders'].length;
             app.fecha = app.order['fecha'];
         }
-        if (app.order['orders'].length >= app.numOrder) {
+        if (app.order['orders'].length > app.numOrder) {
             app.numOrder = app.order['orders'].length;
             if (!app.notification && app.first) {
                 app.playAudio();
@@ -169,9 +195,6 @@ var app = {
             var yearVar = dateVar[0].split("/")[2];
             var monthVar = dateVar[0].split("/")[0];
             var dayVar = dateVar[0].split("/")[1];
-            var yearVarE = dateVar[4].split("/")[2];
-            var monthVarE = dateVar[4].split("/")[0];
-            var dayVarE = dateVar[4].split("/")[1];
             var hVar = dateVar[1].split(':')[0];
             if (dateVar[2] === 'PM') {
                 hVar = +hVar + 12;
@@ -180,27 +203,30 @@ var app = {
                 }
             }
             var mVar = dateVar[1].split(':')[1];
-            var hVarE = dateVar[5].split(':')[0];
-            if (dateVar[6] === 'PM') {
+            var hVarE = dateVar[4].split(':')[0];
+            if (dateVar[5] === 'PM') {
                 hVarE = +hVarE + 12;
                 if (hVarE === 24) {
                     hVarE = 00;
                 }
             }
-            var mVarE = dateVar[5].split(':')[1];
-            var ttE = app.model.meetings[key]['titulo'];
+            var mVarE = dateVar[4].split(':')[1];
+            var ttE = app.model.meetings[key]['sala']+' - '+app.model.meetings[key]['titulo'];
             var eventsE = {
                 title: ttE,
                 start: new Date(yearVar,monthVar-1,dayVar,hVar,mVar),
-                end: new Date(yearVarE,monthVarE-1,dayVarE,hVarE,mVarE),
+                end: new Date(yearVar,monthVar-1,dayVar,hVarE,mVarE),
                 allDay: false,
                 backgroundColor: "#0073b7",
-                borderColor :"#0073b7"
+                borderColor :"#0073b7",
             };
 
-            $('#calendar').fullCalendar('renderEvent', eventsE);
+            $('#calendar').fullCalendar('renderEvent', eventsE, 'stick');
             eventsE = '';
         }
+        $('#calendar').fullCalendar({
+
+        });
     },
 
     showplus: function(){
