@@ -76,7 +76,7 @@ var app = {
           draggable: false,
           allDaySlot: false,
           minTime: '8:00:00',
-          //maxTime: '18:00:00', //
+          //maxTime: '18:00:00',
           views: {
                 settimana: {
                     type: 'agendaWeek',
