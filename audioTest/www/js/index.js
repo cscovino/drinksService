@@ -295,3 +295,9 @@ firebase.database().ref('order').on('value', function(snap){
         app.refreshOrders(snap.val());
     }
 });
+
+if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function(){
+        FastClick.attach(document.body);
+    }, false);
+};
