@@ -125,11 +125,16 @@ var app = {
             codigo += '</table>';
             users.append(codigo);
         }
+        debugger;
+        console.log(app.fecha);
+        console.log(app.order['fecha']);
         if(!app.first){
             app.numOrder = app.order['orders'].length;
+            app.fecha = app.order['fecha'];
         }
-        if (app.fecha != app.order['fecha'] && app.order['orders'].length === app.numOrder) {
+        if (app.fecha != app.order['fecha'] && app.order['orders'].length <= app.numOrder && app.first) {
             app.numOrder = app.order['orders'].length;
+            app.fecha = app.order['fecha'];
             if (!app.notification && app.first) {
                 app.playAudio();
                 app.time = setTimeout(function(){
@@ -137,13 +142,8 @@ var app = {
                     app.receivedOrder();
                 }, 120000);
             }
-            app.fecha = app.order['fecha'];
         }
-        else if (app.fecha != app.order['fecha']) {
-            app.numOrder = app.order['orders'].length;
-            app.fecha = app.order['fecha'];
-        }
-        if (app.order['orders'].length > app.numOrder) {
+        else if (app.order['orders'].length > app.numOrder && app.first) {
             app.numOrder = app.order['orders'].length;
             if (!app.notification && app.first) {
                 app.playAudio();
@@ -158,6 +158,7 @@ var app = {
         }
         app.first = true;
         app.order = [];
+        console.log(app.numOrder);
     },
 
     confirmDelivered: function(data){
