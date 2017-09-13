@@ -125,9 +125,6 @@ var app = {
             codigo += '</table>';
             users.append(codigo);
         }
-        debugger;
-        console.log(app.fecha);
-        console.log(app.order['fecha']);
         if(!app.first){
             app.numOrder = app.order['orders'].length;
             app.fecha = app.order['fecha'];
@@ -158,7 +155,6 @@ var app = {
         }
         app.first = true;
         app.order = [];
-        console.log(app.numOrder);
     },
 
     confirmDelivered: function(data){
