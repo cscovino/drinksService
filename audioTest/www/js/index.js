@@ -270,12 +270,12 @@ var app = {
     }
 };
 
+app.setCalendar();
 emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
 
 if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function(){
         FastClick.attach(document.body);
-        app.setCalendar();
     }, false);
 };
 
