@@ -271,7 +271,7 @@ firebase.initializeApp(app.firebaseConfig);
 firebase.database().ref('inventory').on('value', function(snap){
     if (snap.val() !== null) {
         app.inventory = snap.val();
-        app.refreshInventory();
+        //app.refreshInventory();
     }
 });
 firebase.database().ref('meetings').on('value', function(snap){
@@ -283,6 +283,6 @@ firebase.database().ref('meetings').on('value', function(snap){
 firebase.database().ref('order').on('value', function(snap){
     if (snap.val() !== null) {
         app.orders = jQuery.extend(true,{},snap.val());
-        //app.refreshOrders(snap.val());
+        app.refreshOrders(snap.val());
     }
 });
