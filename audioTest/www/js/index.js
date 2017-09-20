@@ -270,14 +270,20 @@ var app = {
     }
 };
 
-app.setCalendar();
 emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
+
+if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function(){
+        FastClick.attach(document.body);
+        app.setCalendar();
+    }, false);
+};
 
 firebase.initializeApp(app.firebaseConfig);
 firebase.database().ref('inventory').on('value', function(snap){
     if (snap.val() !== null) {
         app.inventory = snap.val();
-        //app.refreshInventory();
+        app.refreshInventory();
     }
 });
 firebase.database().ref('meetings').on('value', function(snap){
@@ -292,9 +298,3 @@ firebase.database().ref('order').on('value', function(snap){
         //app.refreshOrders(snap.val());
     }
 });
-
-if ('addEventListener' in document) {
-    document.addEventListener('DOMContentLoaded', function(){
-        FastClick.attach(document.body);
-    }, false);
-};
