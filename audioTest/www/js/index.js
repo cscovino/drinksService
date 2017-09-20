@@ -62,7 +62,7 @@ var app = {
             y = date.getFullYear();
         $('#calendar').fullCalendar({
           header: {
-            left: 'prev,next today',
+            left: 'today',
             center: 'title',
             right: 'semana,agendaDay'
           },
