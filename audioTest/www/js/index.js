@@ -163,29 +163,36 @@ var app = {
 
     confirmDelivered: function(data){
         document.getElementById('aux-div').innerHTML = data.id;
-        $('#myModal2').modal('show');
+        navigator.notification.confirm(
+            '¿Se ha entregado el pedido?',
+            app.deliveredOrder,
+            'Pedidos',
+            ['No','Sí']
+        );
     },
 
-    deliveredOrder: function(){
-        var id = document.getElementById('aux-div').innerHTML;
-        var client = id.split('_')[0].replace('-',' ');
-        var drink = id.split('_')[1].replace('-',' ');
-        for (var i=0; i<app.orders['orders'].length; i++) {
-            for(var key in app.orders['orders'][i]){
-                if (key === client) {
-                    if (app.orders['orders'][i][key]['Bebida'] === drink) {
-                        app.orders['orders'][i][key]['entregado'] = 1;
-                        var fechaAct = new Date();
-                        var hact = fechaAct.getHours();
-                        var mact = fechaAct.getMinutes();
-                        app.orders['orders'][i][key]['horae'] = hact+':'+mact;
+    deliveredOrder: function(buttonIndex){
+        if (buttonIndex === 2) {
+            var id = document.getElementById('aux-div').innerHTML;
+            var client = id.split('_')[0].replace('-',' ');
+            var drink = id.split('_')[1].replace('-',' ');
+            for (var i=0; i<app.orders['orders'].length; i++) {
+                for(var key in app.orders['orders'][i]){
+                    if (key === client) {
+                        if (app.orders['orders'][i][key]['Bebida'] === drink) {
+                            app.orders['orders'][i][key]['entregado'] = 1;
+                            var fechaAct = new Date();
+                            var hact = fechaAct.getHours();
+                            var mact = fechaAct.getMinutes();
+                            app.orders['orders'][i][key]['horae'] = hact+':'+mact;
+                        }
                     }
                 }
             }
+            firebase.database().ref('order').update(app.orders);
+            document.getElementById(id).style.textDecoration = 'line-through';
+            document.getElementById(id).style.backgroundColor = '#a3a3a3';
         }
-        firebase.database().ref('order').update(app.orders);
-        document.getElementById(id).style.textDecoration = 'line-through';
-        document.getElementById(id).style.backgroundColor = '#a3a3a3';
     },
 
     refreshCalendar: function(snap){
