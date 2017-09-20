@@ -271,6 +271,7 @@ var app = {
 
 app.setCalendar();
 emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
+firebase.initializeApp(app.firebaseConfig);
 
 if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function(){
@@ -290,7 +291,6 @@ firebase.database().ref('meetings').on('value', function(snap){
         app.refreshCalendar(snap.val());
     }
 });
-firebase.initializeApp(app.firebaseConfig);
 firebase.database().ref('inventory').on('value', function(snap){
     if (snap.val() !== null) {
         app.inventory = snap.val();
