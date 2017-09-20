@@ -62,13 +62,12 @@ var app = {
             y = date.getFullYear();
         $('#calendar').fullCalendar({
           header: {
-            left: 'prev,next today',
+            left: 'today',
             center: 'title',
-            right: 'month,agendaWeek,agendaDay'
+            right: 'semana,agendaDay'
           },
           buttonText: {
             today: 'today',
-            month: 'month',
             week: 'week',
             day: 'day'
           },
@@ -76,19 +75,19 @@ var app = {
           draggable: false,
           allDaySlot: false,
           minTime: '8:00:00',
-          //maxTime: '18:00:00',
-          views: {
-                settimana: {
-                    type: 'agendaWeek',
-                    duration: {
-                        days: 7
-                    },
-                    title: 'Apertura',
-                    columnFormat: 'dddd', // Format the day to only show like 'Monday'
-                    hiddenDays: [0, 6] // Hide Sunday and Saturday?
-                }
-            },
-          defaultView: 'settimana',
+          maxTime: '18:00:00',
+          views:{
+            semana: {
+                type: 'agendaWeek',
+                duration:{
+                    days: 7
+                },
+                columnFormat: 'dddd',
+                hiddenDays: [0,6]
+            }
+          },
+          defaultView: 'semana',
+          contentHeight: 530
         });
     },
 
@@ -272,29 +271,32 @@ var app = {
 
 app.setCalendar();
 emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
-
 firebase.initializeApp(app.firebaseConfig);
-firebase.database().ref('inventory').on('value', function(snap){
-    if (snap.val() !== null) {
-        app.inventory = snap.val();
-        //app.refreshInventory();
-    }
-});
-firebase.database().ref('meetings').on('value', function(snap){
-    if (snap.val() !== null) {
-        app.model = snap.val();
-        app.refreshCalendar(snap.val());
-    }
-});
-firebase.database().ref('order').on('value', function(snap){
-    if (snap.val() !== null) {
-        app.orders = jQuery.extend(true,{},snap.val());
-        //app.refreshOrders(snap.val());
-    }
-});
 
 if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function(){
         FastClick.attach(document.body);
     }, false);
 };
+
+firebase.database().ref('inventory').on('value', function(snap){
+    if (snap.val() !== null) {
+        debugger;
+        app.inventory = snap.val();
+        app.refreshInventory();
+    }
+});
+firebase.database().ref('meetings').on('value', function(snap){
+    if (snap.val() !== null) {
+        debugger;
+        app.model = snap.val();
+        app.refreshCalendar(snap.val());
+    }
+});
+firebase.database().ref('order').on('value', function(snap){
+    if (snap.val() !== null) {
+        debugger;
+        app.orders = jQuery.extend(true,{},snap.val());
+        app.refreshOrders(snap.val());
+    }
+});
