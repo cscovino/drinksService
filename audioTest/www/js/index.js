@@ -87,7 +87,7 @@ var app = {
             }
           },
           defaultView: 'semana',
-          contentHeight: 510
+          contentHeight: 550
         });
     },
 
