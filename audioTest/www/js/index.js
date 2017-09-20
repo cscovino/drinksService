@@ -64,11 +64,10 @@ var app = {
           header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'month,agendaWeek,agendaDay'
+            right: 'agendaWeek,agendaDay'
           },
           buttonText: {
             today: 'today',
-            month: 'month',
             week: 'week',
             day: 'day'
           },
@@ -77,6 +76,7 @@ var app = {
           allDaySlot: false,
           minTime: '8:00:00',
           maxTime: '18:00:00',
+          defaultView: 'agendaWeek'
         });
     },
 
