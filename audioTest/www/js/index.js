@@ -34,7 +34,7 @@ var app = {
     playAudio: function(){
         navigator.notification.alert(
             '¿Se ha recibido el pedido?',
-            app.receivedOrder(),
+            app.receivedOrder,
             'Pedidos',
             'Sí'
         );
