@@ -275,27 +275,24 @@ firebase.initializeApp(app.firebaseConfig);
 
 if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function(){
-        FastClick.attach(document.body);
+        
     }, false);
 };
 
 firebase.database().ref('inventory').on('value', function(snap){
     if (snap.val() !== null) {
-        debugger;
         app.inventory = snap.val();
         app.refreshInventory();
     }
 });
 firebase.database().ref('meetings').on('value', function(snap){
     if (snap.val() !== null) {
-        debugger;
         app.model = snap.val();
         app.refreshCalendar(snap.val());
     }
 });
 firebase.database().ref('order').on('value', function(snap){
     if (snap.val() !== null) {
-        debugger;
         app.orders = jQuery.extend(true,{},snap.val());
         app.refreshOrders(snap.val());
     }
