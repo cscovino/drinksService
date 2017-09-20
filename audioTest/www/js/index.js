@@ -76,19 +76,7 @@ var app = {
           draggable: false,
           allDaySlot: false,
           minTime: '8:00:00',
-          //maxTime: '18:00:00',
-          views: {
-                settimana: {
-                    type: 'agendaWeek',
-                    duration: {
-                        days: 7
-                    },
-                    title: 'Apertura',
-                    columnFormat: 'dddd', // Format the day to only show like 'Monday'
-                    hiddenDays: [0, 6] // Hide Sunday and Saturday?
-                }
-            },
-          defaultView: 'settimana',
+          maxTime: '18:00:00',
         });
     },
 
