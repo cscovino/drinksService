@@ -87,7 +87,7 @@ var app = {
             }
           },
           defaultView: 'semana',
-          contentHeight: 500
+          contentHeight: 510
         });
     },
 
@@ -279,21 +279,24 @@ if ('addEventListener' in document) {
     }, false);
 };
 
-firebase.database().ref('order').on('value', function(snap){
+firebase.database().ref('inventory').on('value', function(snap){
     if (snap.val() !== null) {
-        app.orders = jQuery.extend(true,{},snap.val());
-        app.refreshOrders(snap.val());
+        debugger;
+        app.inventory = snap.val();
+        app.refreshInventory();
     }
 });
 firebase.database().ref('meetings').on('value', function(snap){
     if (snap.val() !== null) {
+        debugger;
         app.model = snap.val();
         app.refreshCalendar(snap.val());
     }
 });
-firebase.database().ref('inventory').on('value', function(snap){
+firebase.database().ref('order').on('value', function(snap){
     if (snap.val() !== null) {
-        app.inventory = snap.val();
-        app.refreshInventory();
+        debugger;
+        app.orders = jQuery.extend(true,{},snap.val());
+        app.refreshOrders(snap.val());
     }
 });
