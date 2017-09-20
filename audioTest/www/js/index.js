@@ -32,7 +32,12 @@ var app = {
     },
 
     playAudio: function(){
-        $('#myModal').modal('show');
+        navigator.notification.alert(
+            '¿Se ha recibido el pedido?',
+            app.receivedOrder(),
+            'Pedidos',
+            'Sí'
+        );
         var p = window.location.pathname;
         var aux = p.substring(0,p.lastIndexOf('/'));
         var url = aux+'/sounds/office_phone.mp3';
