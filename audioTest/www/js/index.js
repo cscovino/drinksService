@@ -64,7 +64,7 @@ var app = {
           header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'agendaWeek,agendaDay'
+            right: 'semana,agendaDay'
           },
           buttonText: {
             today: 'today',
@@ -76,7 +76,18 @@ var app = {
           allDaySlot: false,
           minTime: '8:00:00',
           maxTime: '18:00:00',
-          defaultView: 'agendaWeek'
+          views:{
+            semana: {
+                type: 'agendaWeek',
+                duration:{
+                    days: 7
+                },
+                columnFormat: 'dddd',
+                hiddenDays: [0,6]
+            }
+          },
+          defaultView: 'semana',
+          contentHeight: 800
         });
     },
 
