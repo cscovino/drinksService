@@ -127,9 +127,11 @@ var app = {
         }
         if(!app.first){
             app.numOrder = app.order['orders'].length;
+            app.fecha = app.order['fecha'];
         }
-        if (app.fecha != app.order['fecha'] && app.order['orders'].length === app.numOrder) {
+        if (app.fecha != app.order['fecha'] && app.order['orders'].length <= app.numOrder && app.first) {
             app.numOrder = app.order['orders'].length;
+            app.fecha = app.order['fecha'];
             if (!app.notification && app.first) {
                 app.playAudio();
                 app.time = setTimeout(function(){
@@ -137,13 +139,8 @@ var app = {
                     app.receivedOrder();
                 }, 120000);
             }
-            app.fecha = app.order['fecha'];
         }
-        else if (app.fecha != app.order['fecha']) {
-            app.numOrder = app.order['orders'].length;
-            app.fecha = app.order['fecha'];
-        }
-        if (app.order['orders'].length > app.numOrder) {
+        else if (app.order['orders'].length > app.numOrder && app.first) {
             app.numOrder = app.order['orders'].length;
             if (!app.notification && app.first) {
                 app.playAudio();
@@ -280,7 +277,7 @@ firebase.initializeApp(app.firebaseConfig);
 firebase.database().ref('inventory').on('value', function(snap){
     if (snap.val() !== null) {
         app.inventory = snap.val();
-        app.refreshInventory();
+        //app.refreshInventory();
     }
 });
 firebase.database().ref('meetings').on('value', function(snap){
@@ -292,6 +289,12 @@ firebase.database().ref('meetings').on('value', function(snap){
 firebase.database().ref('order').on('value', function(snap){
     if (snap.val() !== null) {
         app.orders = jQuery.extend(true,{},snap.val());
-        app.refreshOrders(snap.val());
+        //app.refreshOrders(snap.val());
     }
 });
+
+if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function(){
+        FastClick.attach(document.body);
+    }, false);
+};

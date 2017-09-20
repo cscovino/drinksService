@@ -270,26 +270,26 @@ var app = {
     }
 };
 
-//app.setCalendar();
+app.setCalendar();
 emailjs.init("user_E6w9y3AjySOWMQGes6bIy");
 
 firebase.initializeApp(app.firebaseConfig);
 firebase.database().ref('inventory').on('value', function(snap){
     if (snap.val() !== null) {
         app.inventory = snap.val();
-        app.refreshInventory();
+        //app.refreshInventory();
     }
 });
 firebase.database().ref('meetings').on('value', function(snap){
     if (snap.val() !== null) {
         app.model = snap.val();
-        //app.refreshCalendar(snap.val());
+        app.refreshCalendar(snap.val());
     }
 });
 firebase.database().ref('order').on('value', function(snap){
     if (snap.val() !== null) {
         app.orders = jQuery.extend(true,{},snap.val());
-        app.refreshOrders(snap.val());
+        //app.refreshOrders(snap.val());
     }
 });
 
