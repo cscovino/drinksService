@@ -41,7 +41,7 @@ var app = {
         var p = window.location.pathname;
         var aux = p.substring(0,p.lastIndexOf('/'));
         var url = aux+'/sounds/office_phone.mp3';
-        app.my_media = new Media(url,null,null,app.onStatus);
+        app.my_media = new Media(url,null,function(err){alert(JSON.stringify(err));},app.onStatus);
         app.my_media.play();
         app.notification = true;
     },
