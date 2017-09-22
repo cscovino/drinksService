@@ -41,7 +41,7 @@ var app = {
         var p = window.location.pathname;
         var aux = p.substring(0,p.lastIndexOf('/'));
         var url = aux+'/sounds/office_phone.mp3';
-        app.my_media = new Media(url,null,function(err){alert(JSON.stringify(err));},app.onStatus);
+        app.my_media = new Media(url,null,null,app.onStatus);
         app.my_media.play();
         app.notification = true;
     },
@@ -117,6 +117,7 @@ var app = {
                     else{
                         codigo += '<tr id="'+key.replace(' ','-')+'_'+app.order['orders'][i][key]['Bebida'].replace(' ','-')+'" onclick="app.confirmDelivered(this);">';
                     }
+                        debugger;
                         var id = app.order['orders'][i][key]['meetId'];
                         codigo += '<td>'+key+'</td>';
                         codigo += '<td>'+app.order['orders'][i][key]['Bebida']+'</td>';
