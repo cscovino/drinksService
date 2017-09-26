@@ -115,7 +115,7 @@ var app = {
                         codigo += '<tr style="text-decoration:line-through;color:#ccc;">';
                     }
                     else{
-                        codigo += '<tr id="'+key.replace(' ','-')+'_'+app.order['orders'][i][key]['Bebida'].replace(' ','-')+'" onclick="app.confirmDelivered(this);">';
+                        codigo += '<tr id="'+key.replace(' ','-')+'_'+app.order['orders'][i][key]['Bebida'].replace(' ','-')+'_'+app.order['orders'][i][key]['Coment'].replace(' ','-')+'" onclick="app.confirmDelivered(this);">';
                     }
                         var id = app.order['orders'][i][key]['meetId'];
                         codigo += '<td>'+key+'</td>';
@@ -176,15 +176,18 @@ var app = {
             var id = document.getElementById('aux-div').innerHTML;
             var client = id.split('_')[0].replace('-',' ');
             var drink = id.split('_')[1].replace('-',' ');
+            var coment = id.split('_')[2].replace('-',' ');
             for (var i=0; i<app.orders['orders'].length; i++) {
                 for(var key in app.orders['orders'][i]){
                     if (key === client) {
                         if (app.orders['orders'][i][key]['Bebida'] === drink) {
-                            app.orders['orders'][i][key]['entregado'] = 1;
-                            var fechaAct = new Date();
-                            var hact = fechaAct.getHours();
-                            var mact = fechaAct.getMinutes();
-                            app.orders['orders'][i][key]['horae'] = hact+':'+mact;
+                            if (app.orders['orders'][i][key]['Coment'] === coment) {    
+                                app.orders['orders'][i][key]['entregado'] = 1;
+                                var fechaAct = new Date();
+                                var hact = fechaAct.getHours();
+                                var mact = fechaAct.getMinutes();
+                                app.orders['orders'][i][key]['horae'] = hact+':'+mact;
+                            }
                         }
                     }
                 }
