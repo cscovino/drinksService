@@ -260,7 +260,7 @@ var app = {
     refreshInventory: function(){
         for(var key in app.inventory){
             var bar = 'bar-'+key;
-            document.getElementById(key).innerHTML = app.inventory[key]+'/20';
+            document.getElementById(key).innerHTML = app.inventory[key];
             var percent = app.inventory[key]*100/20;
             document.getElementById(bar).style.width = percent+'%';
             if (percent < 33) {
