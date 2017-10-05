@@ -260,8 +260,8 @@ var app = {
     refreshInventory: function(){
         for(var key in app.inventory){
             var bar = 'bar-'+key;
-            document.getElementById(key).innerHTML = app.inventory[key]+'/10';
-            var percent = app.inventory[key]*100/10;
+            document.getElementById(key).innerHTML = app.inventory[key]+'/20';
+            var percent = app.inventory[key]*100/20;
             document.getElementById(bar).style.width = percent+'%';
             if (percent < 33) {
                 document.getElementById(bar).className = 'progress-bar progress-bar-danger';
@@ -277,9 +277,6 @@ var app = {
 
     add: function(item){
         app.inventory[item.id] += 1;
-        if (app.inventory[item.id] > 10) {
-            app.inventory[item.id] = 10;
-        }
         app.refreshInventory();
     }
 };
