@@ -23,12 +23,12 @@ var app = {
     time: {},
 
     firebaseConfig: {
-        apiKey: "AIzaSyCkQaGeVx7aqj0Gt2C15i8BdzSup3yNQuM",
-        authDomain: "reuniones-46a77.firebaseapp.com",
-        databaseURL: "https://reuniones-46a77.firebaseio.com",
-        projectId: "reuniones-46a77",
-        storageBucket: "reuniones-46a77.appspot.com",
-        messagingSenderId: "888234651975"
+        apiKey: "AIzaSyCspPFp4TAhFXrkwsy-9N8DO3lNFtYQY5k",
+        authDomain: "reuniones-b24ce.firebaseapp.com",
+        databaseURL: "https://reuniones-b24ce.firebaseio.com",
+        projectId: "reuniones-b24ce",
+        storageBucket: "reuniones-b24ce.appspot.com",
+        messagingSenderId: "1083009736195"
     },
 
     playAudio: function(){
