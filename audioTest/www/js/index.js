@@ -57,7 +57,15 @@ var app = {
     receivedOrder: function(){
         app.my_media.stop();
         app.notification = false;
+        for (var i=0; i<app.order['orders'].length; i++) {
+            for(var key in app.order['orders'][i]){
+                if (app.order['orders'][i][key]['entregado'] !== 1) {
+                    app.order['orders'][i][key]['entregado'] = 2;
+                }
+            }
+        }
         clearTimeout(app.time);
+        firebase.database().ref('order').update(app.orders);
     },
 
     setCalendar: function(){
