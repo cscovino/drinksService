@@ -65,7 +65,7 @@ var app = {
             }
         }
         clearTimeout(app.time);
-        firebase.database().ref('order').update(app.orders);
+        firebase.database().ref('order').update(app.order);
     },
 
     setCalendar: function(){
