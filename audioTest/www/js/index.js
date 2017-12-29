@@ -57,15 +57,23 @@ var app = {
     receivedOrder: function(){
         app.my_media.stop();
         app.notification = false;
-        for (var i=0; i<app.order['orders'].length; i++) {
-            for(var key in app.order['orders'][i]){
-                if (app.order['orders'][i][key]['entregado'] !== 1) {
-                    app.order['orders'][i][key]['entregado'] = 2;
+        var id = document.getElementById('aux-div').innerHTML;
+        var client = id.split('_')[0].replace('-',' ');
+        var drink = id.split('_')[1].replace('-',' ');
+        var coment = id.split('_')[2].replace('-',' ');
+        for (var i=0; i<app.orders['orders'].length; i++) {
+            for(var key in app.orders['orders'][i]){
+                if (key === client) {
+                    if (app.orders['orders'][i][key]['Bebida'] === drink) {
+                        if (app.orders['orders'][i][key]['Coment'] === coment) {    
+                            app.orders['orders'][i][key]['entregado'] = 2;
+                        }
+                    }
                 }
             }
         }
         clearTimeout(app.time);
-        firebase.database().ref('order').update(app.order);
+        firebase.database().ref('order').update(app.orders);
     },
 
     setCalendar: function(){
