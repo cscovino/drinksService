@@ -59,7 +59,9 @@ var app = {
         app.notification = false;
         for (var i=0; i<app.orders['orders'].length; i++) {
             for(var key in app.orders['orders'][i]){
-                app.orders['orders'][i][key]['entregado'] = 2;
+                if (app.orders['orders'][i][key]['entregado'] === 0) {
+                    app.orders['orders'][i][key]['entregado'] = 2;
+                }
             }
         }
         firebase.database().ref('order').update(app.orders);
