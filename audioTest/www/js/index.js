@@ -57,19 +57,9 @@ var app = {
     receivedOrder: function(){
         app.my_media.stop();
         app.notification = false;
-        var id = document.getElementById('aux-div').innerHTML;
-        var client = id.split('_')[0].replace('-',' ');
-        var drink = id.split('_')[1].replace('-',' ');
-        var coment = id.split('_')[2].replace('-',' ');
         for (var i=0; i<app.orders['orders'].length; i++) {
             for(var key in app.orders['orders'][i]){
-                if (key === client) {
-                    if (app.orders['orders'][i][key]['Bebida'] === drink) {
-                        if (app.orders['orders'][i][key]['Coment'] === coment) {    
-                            app.orders['orders'][i][key]['entregado'] = 2;
-                        }
-                    }
-                }
+                app.orders['orders'][i][key]['entregado'] = 2;
             }
         }
         firebase.database().ref('order').update(app.orders);
